@@ -52,7 +52,6 @@ def run_code(language, code):
         return str(e)
 
     finally:
-        # Safely delete all temp files
         for ext in ['.py', '.c', '.cpp', '.exe', '.class', '.java']:
             temp_file = f"{filename}{ext}"
             if os.path.exists(temp_file):
