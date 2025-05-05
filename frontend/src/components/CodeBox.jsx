@@ -57,10 +57,8 @@ export default function CodeBox() {
       className="bg-gray-800 p-2 rounded text-white w-fit"
        >
     <option value="">Select Language</option>
-   <option value="c">C</option>
-    <option value="cpp">C++</option>
+    <option value="c">C</option>
     <option value="python">Python</option>
-     <option value="java">Java</option>
     </select>
           <textarea
             value={code}
@@ -72,6 +70,7 @@ export default function CodeBox() {
 
         {/* Right: Input/Output */}
         <div className="flex flex-col space-y-4">
+          <div className="flex flex-row space-x-5">
           <button
             onClick={handleRun}
             className="bg-blue-500 hover:bg-blue-600 w-fit px-4 py-2 rounded"
@@ -84,6 +83,9 @@ export default function CodeBox() {
           >
             Convert
           </button>
+
+          </div>
+          
           <textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}

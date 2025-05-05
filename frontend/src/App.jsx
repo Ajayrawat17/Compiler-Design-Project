@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import CodeBox from "./components/codebox";
+import CodeBox from "./components/CodeBox";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
