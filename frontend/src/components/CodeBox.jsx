@@ -56,7 +56,6 @@ export default function CodeBox() {
      onChange={(e) => setLanguage(e.target.value)}
       className="bg-gray-800 p-2 rounded text-white w-fit"
        >
-    <option value="">Select Language</option>
     <option value="c">C</option>
     <option value="python">Python</option>
     </select>
