@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 import subprocess, tempfile, os
 
-from convertor.python_parser.py_converter import convert_python_to_pseudo
+from convertor.python_parser.py_converter import convert_to_pseudocode  
 
 router = APIRouter()
 
@@ -19,9 +19,9 @@ def convert_code(data: CodeInput):
             exe_path = os.path.join("backend", "convertor", "pseudo_parser", "c_to_pseudo.exe")
             result = subprocess.run([exe_path, temp.name], capture_output=True, text=True)
             return {"pseudo_code": result.stdout}
-    
+
     elif data.language.lower() == "python":
-        return {"pseudo_code": convert_python_to_pseudo(data.code)}
-    
+        return {"pseudo_code": convert_to_pseudocode(data.code)}  # ✅ updated function call
+
     else:
         return {"error": "Unsupported language"}

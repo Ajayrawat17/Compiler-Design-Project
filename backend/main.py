@@ -4,8 +4,8 @@ import subprocess
 import os
 import tempfile
 
-# Import Python converter
-from convertor.python_parser.py_converter import convert_python_to_pseudo
+# Correct function name - adjust if needed in py_converter.py
+from convertor.python_parser.py_converter import convert_to_pseudocode
 
 app = FastAPI()
 
@@ -13,7 +13,7 @@ app = FastAPI()
 def read_root():
     return {"message": "Compiler backend running!"}
 
-# Enable CORS for frontend
+# Enable CORS so frontend can call this API
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -25,32 +25,31 @@ app.add_middleware(
 async def convert_code(language: str = Form(...), code: str = Form(...)):
     if language.lower() == "python":
         try:
-            pseudo = convert_python_to_pseudo(code)
+            pseudo = convert_to_pseudocode(code)
             return {"pseudo_code": pseudo}
         except Exception as e:
             return {"error": f"Python conversion error: {str(e)}"}
 
     elif language.lower() == "c":
         try:
-            # Save C code to a temp file
+            # Save C code to a temporary file
             with tempfile.NamedTemporaryFile(delete=False, suffix=".c", mode="w") as temp_file:
                 temp_file.write(code)
                 temp_path = temp_file.name
 
-            # Compile C parser
+            # Run make to compile C parser (only once ideally, can optimize this later)
             subprocess.run(["make", "-C", "convertor/pseudo_parser"], check=True)
 
-            # Use correct path separator for Windows
+            # Choose correct executable based on OS
             binary = os.path.join("convertor", "pseudo_parser", "c_to_pseudo.exe") if os.name == 'nt' else os.path.join("convertor", "pseudo_parser", "parser")
 
-            # Check if binary actually exists
             if not os.path.exists(binary):
                 return {"error": f"Executable not found at: {binary}"}
 
-            # Run the binary with temp file as input
+            # Execute binary with the temp file as input
             result = subprocess.run([binary, temp_path], capture_output=True, text=True)
 
-            # Delete temp file after processing
+            # Clean up temp file
             os.unlink(temp_path)
 
             return {"pseudo_code": result.stdout or "No output generated."}
