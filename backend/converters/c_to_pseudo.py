@@ -26,6 +26,7 @@ class CCodeVisitor(c_ast.NodeVisitor):
         for stmt in node.block_items or []:
             self.visit(stmt)
 
+
     def visit_Decl(self, node):
         if isinstance(node.type, c_ast.TypeDecl):
             if node.init:
