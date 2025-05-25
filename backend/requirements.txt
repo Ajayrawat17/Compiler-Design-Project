@@ -1,6 +1,7 @@
 fastapi
 uvicorn
 pycparser
+pydantic
 python-multipart
 django
 djangorestframework

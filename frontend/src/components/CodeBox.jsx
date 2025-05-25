@@ -11,54 +11,67 @@ export default function CodeBox() {
   const navigate = useNavigate();
 
   const handleRun = async () => {
-  setOutput(`Running ${language} code...`);
+    setOutput(`Running ${language} code...`);
 
-  try {
-    // Step 1: Send POST request
-    const postResponse = await fetch("http://localhost:8000/compiler/compile/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code, language }),
-    });
-
-    const postData = await postResponse.json();
-
-    // If no placeholders, directly show output
-    if (postData.output) {
-      setOutput(postData.output);
-    } else if (postData.code_id) {
-      // Step 2: Prepare inputs from textarea
-      let inputObj = {};
-      try {
-        // Assume input is a JSON object like: { "input1": "5", "input2": "hello" }
-        inputObj = JSON.parse(input);
-      } catch (e) {
-        setOutput("Invalid input format. Use JSON like {\"input1\": \"5\"}");
-        return;
-      }
-
-      // Step 3: Send PUT request
-      const putResponse = await fetch("http://localhost:8000/compiler/compile/", {
-        method: "PUT",
+    try {
+      // Step 1: Send POST request
+      const postResponse = await fetch("http://localhost:8000/compiler/compile/", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ code_id: postData.code_id, inputs: inputObj }),
+        body: JSON.stringify({ code, language }),
       });
 
-      const putData = await putResponse.json();
-      setOutput(putData.output || "No output returned.");
-    } else {
-      setOutput("Unexpected server response.");
+      const postData = await postResponse.json();
+
+      // If no placeholders, directly show output
+      if (postData.output) {
+        setOutput(postData.output);
+      } else if (postData.code_id) {
+        // Step 2: Prepare inputs from textarea
+        let inputObj = {};
+        try {
+          // Assume input is a JSON object like: { "input1": "5", "input2": "hello" }
+          inputObj = JSON.parse(input);
+        } catch (e) {
+          setOutput("Invalid input format. Use JSON like {\"input1\": \"5\"}");
+          return;
+        }
+
+        // Step 3: Send PUT request
+        const putResponse = await fetch("http://localhost:8000/compiler/compile/", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code_id: postData.code_id, inputs: inputObj }),
+        });
+
+        const putData = await putResponse.json();
+        setOutput(putData.output || "No output returned.");
+      } else {
+        setOutput("Unexpected server response.");
+      }
+    } catch (err) {
+      console.error(err);
+      setOutput("An error occurred while compiling the code.");
     }
-  } catch (err) {
-    console.error(err);
-    setOutput("An error occurred while compiling the code.");
-  }
-};
-
-
-  const handleConvert = () => {
-    setOutput(`Converting ${language} code...`);
   };
+
+
+  const handleConvert = async () => {
+    setOutput("Converting...");
+    try {
+      const res = await fetch("http://localhost:8001/convert", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ language, code }),
+      });
+      const data = await res.json();
+      setOutput(data.pseudocode || "No pseudocode generated.");
+    } catch (err) {
+      setOutput("Error converting code.");
+      console.error(err);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-[#1e1e1e] text-white">
