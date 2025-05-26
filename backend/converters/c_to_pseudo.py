@@ -5,7 +5,7 @@ import re
 class CCodeVisitor(c_ast.NodeVisitor):
     def __init__(self):
         self.pseudo = []
-        self.indent_level = 0
+        self.indent_level = 0...
 
     def indent(self):
         return "    " * self.indent_level
