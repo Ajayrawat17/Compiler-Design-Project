@@ -86,20 +86,7 @@ export default function CodeBox() {
           CodeBox
         </motion.h1>
 
-        <div className="space-x-4">
-          <button
-            onClick={() => navigate("/login")}
-            className="bg-gray-700 px-4 py-2 rounded hover:bg-gray-600"
-          >
-            Login
-          </button>
-          <button
-            onClick={() => navigate("/signup")}
-            className="bg-blue-600 px-4 py-2 rounded hover:bg-blue-500"
-          >
-            Sign Up
-          </button>
-        </div>
+        
       </div>
 
       {/* Main Split Layout */}
