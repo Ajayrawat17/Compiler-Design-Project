@@ -8,7 +8,7 @@ class CCodeVisitor(c_ast.NodeVisitor):
         self.indent_level = 0
 
     def indent(self):
-        return "    " * self.indent_level
+        return "    " * self.indent_level.
 
     def visit_FuncDef(self, node):
         name = node.decl.name
