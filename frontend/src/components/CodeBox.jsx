@@ -127,13 +127,8 @@ export default function CodeBox() {
 
           </div>
           
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder="Enter input here..."
-            className="h-24 p-2 bg-[#2d2d2d] rounded resize-none outline-none"
-          />
-          <div className="bg-[#2d2d2d] p-4 rounded h-40 overflow-auto">
+          
+          <div className="bg-[#2d2d2d] p-4 rounded h-100 overflow-auto">
             <h2 className="font-semibold mb-2">Output:</h2>
             <pre>{output || "No output yet."}</pre>
           </div>
