@@ -58,13 +58,9 @@ class CCodeVisitor(c_ast.NodeVisitor):
             init = self._expr(node.init)
             cond = self._expr(node.cond)
             next_ = self._expr(node.next)
-
-            # Extract variable and init value
             match_init = re.match(r'(int\s+)?(\w+)\s*=\s*(.+)', init)
             var = match_init.group(2) if match_init else "i"
             start = match_init.group(3) if match_init else "0"
-
-            # Extract end value from condition (e.g., i <= n)
             match_cond = re.match(rf'{var}\s*<=\s*(.+)', cond)
             end = match_cond.group(1) if match_cond else "?"
 
@@ -102,7 +98,7 @@ class CCodeVisitor(c_ast.NodeVisitor):
     def visit_FuncCall(self, node):
         if isinstance(node.name, c_ast.ID) and node.name.name == 'printf':
             if node.args:
-                # Skip the format string (first argument)
+            
                 args = node.args.exprs[1:] if len(node.args.exprs) > 1 else []
                 clean_args = []
                 for arg in args:
@@ -127,7 +123,6 @@ class CCodeVisitor(c_ast.NodeVisitor):
             return str(node)
 
 def clean_c_code(code: str) -> str:
-    # Remove #include and #define lines which pycparser can't handle
     return re.sub(r'^\s*#.*$', '', code, flags=re.MULTILINE)
 
 def convert_c_to_pseudocode(code: str) -> str:
