@@ -1,11 +1,11 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .compiler import run_code  # Import your compiler execution logic
+from .compiler import run_code 
 import uuid
 import re
 
 class CompileCodeView(APIView):
-    code_storage = {}  # Dictionary to store code temporarily
+    code_storage = {} 
 
     def post(self, request):
         code = request.data.get('code', '')
@@ -14,14 +14,14 @@ class CompileCodeView(APIView):
         if not code or not language:
             return Response({'error': 'Code and Language are required fields.'}, status=400)
 
-        # Generate unique code ID
+        
         code_id = str(uuid.uuid4())
         CompileCodeView.code_storage[code_id] = {
             'code': code,
             'language': language
         }
 
-        # Check if code contains placeholders like {{input1}}
+        
         if not re.search(r"\{\{.*?\}\}", code):
             # No placeholders, run immediately
             output = run_code(language, code)
@@ -31,7 +31,7 @@ class CompileCodeView(APIView):
                 'message': 'Code executed successfully (no inputs required).'
             })
 
-        # Placeholders exist, wait for inputs via PUT
+        
         return Response({
             'message': 'Code stored successfully. Waiting for inputs...',
             'code_id': code_id
