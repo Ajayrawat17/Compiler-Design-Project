@@ -6,7 +6,7 @@ export default function CodeBox() {
   const [code, setCode] = useState("");
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
-  const [language, setLanguage] = useState("");
+  const [language, setLanguage] = useState("python");
 
   const navigate = useNavigate();
 
