@@ -1,5 +1,3 @@
-# compiler/intermediate.py
-
 def generate_intermediate_code(tokens):
     ir = []
     temp_var_count = 0

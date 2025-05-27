@@ -1,5 +1,3 @@
-# compiler/lexer.py
-
 import re
 
 KEYWORDS = {'if', 'else', 'while', 'for', 'def', 'return', 'int', 'float', 'void'}

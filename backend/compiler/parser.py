@@ -1,5 +1,3 @@
-# compiler/parser.py
-
 def parse_tokens(tokens):
     i = 0
     while i < len(tokens):

@@ -21,16 +21,6 @@ def run_code(language, code):
                 return compile_result.stderr
             result = subprocess.run([f"./{exe_file}"], capture_output=True, text=True, timeout=5)
 
-        elif language == 'cpp':
-            cpp_file = f"{filename}.cpp"
-            exe_file = f"{filename}.exe"
-            with open(cpp_file, 'w') as f:
-                f.write(code)
-            compile_result = subprocess.run(['g++', cpp_file, '-o', exe_file], capture_output=True, text=True)
-            if compile_result.returncode != 0:
-                return compile_result.stderr
-            result = subprocess.run([f"./{exe_file}"], capture_output=True, text=True, timeout=5)
-
         elif language == 'java':
             java_file = f"{filename}.java"
             class_name = filename
@@ -52,7 +42,7 @@ def run_code(language, code):
         return str(e)
 
     finally:
-        for ext in ['.py', '.c', '.cpp', '.exe', '.class', '.java']:
+        for ext in ['.py', '.c', '.exe', '.class', '.java']:
             temp_file = f"{filename}{ext}"
             if os.path.exists(temp_file):
                 os.remove(temp_file)
